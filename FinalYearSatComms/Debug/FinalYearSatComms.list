@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 0000002e  00000000  00000000  000080d0  2**0
                   CONTENTS, READONLY
- 12 .debug_info   000134bd  00000000  00000000  000080fe  2**0
+ 12 .debug_info   00013492  00000000  00000000  000080fe  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00002015  00000000  00000000  0001b5bb  2**0
+ 13 .debug_abbrev 00001fe9  00000000  00000000  0001b590  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00000c38  00000000  00000000  0001d5d0  2**3
+ 14 .debug_aranges 00000c30  00000000  00000000  0001d580  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000975  00000000  00000000  0001e208  2**0
+ 15 .debug_rnglists 0000096f  00000000  00000000  0001e1b0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00032174  00000000  00000000  0001eb7d  2**0
+ 16 .debug_macro  00032174  00000000  00000000  0001eb1f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0001004f  00000000  00000000  00050cf1  2**0
+ 17 .debug_line   00010024  00000000  00000000  00050c93  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00145393  00000000  00000000  00060d40  2**0
+ 18 .debug_str    00145393  00000000  00000000  00060cb7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  001a60d3  2**0
+ 19 .comment      00000043  00000000  00000000  001a604a  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00003300  00000000  00000000  001a6118  2**2
+ 20 .debug_frame  000032dc  00000000  00000000  001a6090  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006e  00000000  00000000  001a9418  2**0
+ 21 .debug_line_str 0000006e  00000000  00000000  001a936c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -345,33 +345,23 @@ Disassembly of section .text:
  80005fa:	bf00      	nop
 
 080005fc <main>:
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
+static void MX_USB_OTG_HS_USB_Init(void);
+static void MX_UART4_Init(void);
+static void MX_USART6_UART_Init(void);
+
 int main(void)
 {
  80005fc:	b580      	push	{r7, lr}
  80005fe:	af00      	add	r7, sp, #0
-  /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
  8000600:	f000 fdbc 	bl	800117c <HAL_Init>
-  /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
 
-  /* Configure the system clock */
   SystemClock_Config();
  8000604:	f000 f828 	bl	8000658 <SystemClock_Config>
-  /* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
  8000608:	f000 f9ce 	bl	80009a8 <MX_GPIO_Init>
   MX_ETH_Init();
@@ -397,15 +387,15 @@ int main(void)
  800062e:	4603      	mov	r3, r0
  8000630:	2b00      	cmp	r3, #0
  8000632:	d1f5      	bne.n	8000620 <main+0x24>
-	          {
-	              // Store received byte into the buffer
+	         {
+
 	              rx_data[0] = Data;
  8000634:	4b05      	ldr	r3, [pc, #20]	@ (800064c <main+0x50>)
  8000636:	781a      	ldrb	r2, [r3, #0]
  8000638:	4b06      	ldr	r3, [pc, #24]	@ (8000654 <main+0x58>)
  800063a:	701a      	strb	r2, [r3, #0]
 
-	              // You can print the received data via transmission or handle it
+
 	              HAL_UART_Transmit(&huart3, &Data, 1, HAL_MAX_DELAY);
  800063c:	f04f 33ff 	mov.w	r3, #4294967295
  8000640:	2201      	movs	r2, #1
@@ -419,10 +409,10 @@ int main(void)
  8000654:	240000f0 	.word	0x240000f0
 
 08000658 <SystemClock_Config>:
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+
+}
+
+
 void SystemClock_Config(void)
 {
  8000658:	b580      	push	{r7, lr}
@@ -441,14 +431,10 @@ void SystemClock_Config(void)
  8000672:	4618      	mov	r0, r3
  8000674:	f005 fd9a 	bl	80061ac <memset>
 
-  /** Supply configuration update enable
-  */
   HAL_PWREx_ConfigSupply(PWR_LDO_SUPPLY);
  8000678:	2002      	movs	r0, #2
  800067a:	f001 fcff 	bl	800207c <HAL_PWREx_ConfigSupply>
 
-  /** Configure the main internal regulator output voltage
-  */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
  800067e:	2300      	movs	r3, #0
  8000680:	603b      	str	r3, [r7, #0]
@@ -471,9 +457,7 @@ void SystemClock_Config(void)
  80006a4:	f5b3 5f00 	cmp.w	r3, #8192	@ 0x2000
  80006a8:	d1f8      	bne.n	800069c <SystemClock_Config+0x44>
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE;
  80006aa:	2321      	movs	r3, #33	@ 0x21
  80006ac:	627b      	str	r3, [r7, #36]	@ 0x24
@@ -525,8 +509,7 @@ void SystemClock_Config(void)
  80006f2:	f000 fa55 	bl	8000ba0 <Error_Handler>
   }
 
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
+
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
  80006f6:	233f      	movs	r3, #63	@ 0x3f
  80006f8:	607b      	str	r3, [r7, #4]
@@ -574,19 +557,17 @@ void SystemClock_Config(void)
  8000734:	58024800 	.word	0x58024800
 
 08000738 <MX_ETH_Init>:
-  * @brief ETH Initialization Function
-  * @param None
-  * @retval None
-  */
+
+
 static void MX_ETH_Init(void)
 {
  8000738:	b580      	push	{r7, lr}
  800073a:	af00      	add	r7, sp, #0
+
+
    static uint8_t MACAddr[6];
 
-  /* USER CODE BEGIN ETH_Init 1 */
 
-  /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
  800073c:	4b1e      	ldr	r3, [pc, #120]	@ (80007b8 <MX_ETH_Init+0x80>)
  800073e:	4a1f      	ldr	r2, [pc, #124]	@ (80007bc <MX_ETH_Init+0x84>)
@@ -636,9 +617,6 @@ static void MX_ETH_Init(void)
  8000780:	f240 52f4 	movw	r2, #1524	@ 0x5f4
  8000784:	615a      	str	r2, [r3, #20]
 
-  /* USER CODE BEGIN MACADDRESS */
-
-  /* USER CODE END MACADDRESS */
 
   if (HAL_ETH_Init(&heth) != HAL_OK)
  8000786:	480c      	ldr	r0, [pc, #48]	@ (80007b8 <MX_ETH_Init+0x80>)
@@ -668,9 +646,6 @@ static void MX_ETH_Init(void)
  80007ae:	4b07      	ldr	r3, [pc, #28]	@ (80007cc <MX_ETH_Init+0x94>)
  80007b0:	2200      	movs	r2, #0
  80007b2:	611a      	str	r2, [r3, #16]
-  /* USER CODE BEGIN ETH_Init 2 */
-
-  /* USER CODE END ETH_Init 2 */
 
 }
  80007b4:	bf00      	nop
@@ -683,19 +658,13 @@ static void MX_ETH_Init(void)
  80007cc:	240000fc 	.word	0x240000fc
 
 080007d0 <MX_UART4_Init>:
-  * @brief UART4 Initialization Function
-  * @param None
-  * @retval None
-  */
+
+
 static void MX_UART4_Init(void)
 {
  80007d0:	b580      	push	{r7, lr}
  80007d2:	af00      	add	r7, sp, #0
-  /* USER CODE END UART4_Init 0 */
 
-  /* USER CODE BEGIN UART4_Init 1 */
-
-  /* USER CODE END UART4_Init 1 */
   huart4.Instance = UART4;
  80007d4:	4b22      	ldr	r3, [pc, #136]	@ (8000860 <MX_UART4_Init+0x90>)
  80007d6:	4a23      	ldr	r2, [pc, #140]	@ (8000864 <MX_UART4_Init+0x94>)
@@ -782,9 +751,7 @@ static void MX_UART4_Init(void)
     Error_Handler();
  8000858:	f000 f9a2 	bl	8000ba0 <Error_Handler>
   }
-  /* USER CODE BEGIN UART4_Init 2 */
 
-  /* USER CODE END UART4_Init 2 */
 
 }
  800085c:	bf00      	nop
@@ -793,19 +760,14 @@ static void MX_UART4_Init(void)
  8000864:	40004c00 	.word	0x40004c00
 
 08000868 <MX_USART3_UART_Init>:
-  * @brief USART3 Initialization Function
-  * @param None
-  * @retval None
-  */
+
+
 static void MX_USART3_UART_Init(void)
 {
  8000868:	b580      	push	{r7, lr}
  800086a:	af00      	add	r7, sp, #0
-  /* USER CODE END USART3_Init 0 */
 
-  /* USER CODE BEGIN USART3_Init 1 */
 
-  /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
  800086c:	4b22      	ldr	r3, [pc, #136]	@ (80008f8 <MX_USART3_UART_Init+0x90>)
  800086e:	4a23      	ldr	r2, [pc, #140]	@ (80008fc <MX_USART3_UART_Init+0x94>)
@@ -892,9 +854,7 @@ static void MX_USART3_UART_Init(void)
     Error_Handler();
  80008f0:	f000 f956 	bl	8000ba0 <Error_Handler>
   }
-  /* USER CODE BEGIN USART3_Init 2 */
 
-  /* USER CODE END USART3_Init 2 */
 
 }
  80008f4:	bf00      	nop
@@ -903,19 +863,14 @@ static void MX_USART3_UART_Init(void)
  80008fc:	40004800 	.word	0x40004800
 
 08000900 <MX_USART6_UART_Init>:
-  * @brief USART6 Initialization Function
-  * @param None
-  * @retval None
-  */
+
+
 static void MX_USART6_UART_Init(void)
 {
  8000900:	b580      	push	{r7, lr}
  8000902:	af00      	add	r7, sp, #0
-  /* USER CODE END USART6_Init 0 */
 
-  /* USER CODE BEGIN USART6_Init 1 */
 
-  /* USER CODE END USART6_Init 1 */
   huart6.Instance = USART6;
  8000904:	4b22      	ldr	r3, [pc, #136]	@ (8000990 <MX_USART6_UART_Init+0x90>)
  8000906:	4a23      	ldr	r2, [pc, #140]	@ (8000994 <MX_USART6_UART_Init+0x94>)
@@ -1002,9 +957,7 @@ static void MX_USART6_UART_Init(void)
     Error_Handler();
  8000988:	f000 f90a 	bl	8000ba0 <Error_Handler>
   }
-  /* USER CODE BEGIN USART6_Init 2 */
 
-  /* USER CODE END USART6_Init 2 */
 
 }
  800098c:	bf00      	nop
@@ -1013,18 +966,14 @@ static void MX_USART6_UART_Init(void)
  8000994:	40011400 	.word	0x40011400
 
 08000998 <MX_USB_OTG_HS_USB_Init>:
-  * @brief USB_OTG_HS Initialization Function
-  * @param None
-  * @retval None
-  */
+
+
 static void MX_USB_OTG_HS_USB_Init(void)
 {
  8000998:	b480      	push	{r7}
  800099a:	af00      	add	r7, sp, #0
-  /* USER CODE END USB_OTG_HS_Init 1 */
-  /* USER CODE BEGIN USB_OTG_HS_Init 2 */
 
-  /* USER CODE END USB_OTG_HS_Init 2 */
+
 
 }
  800099c:	bf00      	nop
@@ -1034,10 +983,7 @@ static void MX_USB_OTG_HS_USB_Init(void)
 	...
 
 080009a8 <MX_GPIO_Init>:
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
+
 static void MX_GPIO_Init(void)
 {
  80009a8:	b580      	push	{r7, lr}
@@ -1051,10 +997,7 @@ static void MX_GPIO_Init(void)
  80009b8:	609a      	str	r2, [r3, #8]
  80009ba:	60da      	str	r2, [r3, #12]
  80009bc:	611a      	str	r2, [r3, #16]
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
 
-  /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
  80009be:	4b71      	ldr	r3, [pc, #452]	@ (8000b84 <MX_GPIO_Init+0x1dc>)
  80009c0:	f8d3 30e0 	ldr.w	r3, [r3, #224]	@ 0xe0
@@ -1281,8 +1224,7 @@ static void MX_GPIO_Init(void)
  8000b74:	4806      	ldr	r0, [pc, #24]	@ (8000b90 <MX_GPIO_Init+0x1e8>)
  8000b76:	f001 f8bf 	bl	8001cf8 <HAL_GPIO_Init>
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+
 }
  8000b7a:	bf00      	nop
  8000b7c:	3730      	adds	r7, #48	@ 0x30
@@ -1298,10 +1240,8 @@ static void MX_GPIO_Init(void)
  8000b9c:	58020000 	.word	0x58020000
 
 08000ba0 <Error_Handler>:
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+
+
 void Error_Handler(void)
 {
  8000ba0:	b480      	push	{r7}
@@ -1315,8 +1255,7 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8000ba4:	b672      	cpsid	i
 }
  8000ba6:	bf00      	nop
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+
   __disable_irq();
   while (1)
  8000ba8:	bf00      	nop
