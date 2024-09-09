@@ -1,13 +1,15 @@
+//stm32l432kc
 
 #include "main.h"
 #include <string.h>
 
-#include "LoRa_E32.h"
+#include "e22900t22d.h"
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 uint8_t rxData[100];
 uint8_t txData[] = "received\r\n";
+
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
@@ -34,8 +36,7 @@ int main(void)
   while (1)
   {
 
-	  HAL_UART_Receive(&huart2, rxData, sizeof(rxData), 100);
-
+	  e22_lora_receive(uint8_t *pData, uint16_t size);
   }
 
 }

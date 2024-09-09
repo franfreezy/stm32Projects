@@ -54,9 +54,7 @@ int main(void)
   while (1)
   {
 
-	  //HAL_UART_Transmit(&huart3, txData, sizeof(txData), 10);
-	  //HAL_Delay(1000);
-	  // for some reason only usart3 is working...
+	  e22_lora_transnit(uint8_t *pData, uint16_t size, uint16_t address, uint8_t channel)
   }
 
 }
